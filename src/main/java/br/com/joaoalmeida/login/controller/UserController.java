@@ -6,12 +6,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.gson.Gson;
 
 import br.com.joaoalmeida.login.bussines.UserBusiness;
 import br.com.joaoalmeida.login.entities.User;
@@ -32,7 +33,6 @@ public class UserController {
 		return userBussiness.criarLogin(user);
 	}
 
-	@CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/users/all")
 	public List<User> getAllUsers() {
 		final Iterator<User> iterator = userRepository.findAll().iterator();
@@ -45,8 +45,16 @@ public class UserController {
 		return users;
 	}
 
-	@GetMapping("/user")
-	public ResponseEntity<User> getUser(@RequestBody User user) {
+	@PostMapping("/senhaEmail")
+	public ResponseEntity<?> enviaSenhaEmail(@RequestBody User user) {
+
+		return userBussiness.enviaSenhaEmail(user);
+	}
+
+	@PostMapping("/user")
+	public ResponseEntity<User> getUser(@RequestBody String userString) {
+
+		final User user = new Gson().fromJson(userString, User.class);
 
 		return userBussiness.validarLogin(user);
 	}

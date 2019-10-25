@@ -11,4 +11,7 @@ public interface UserRepository extends ElasticsearchRepository<User, String> {
 
 	@Query("{\"bool\":{\"must\":[{\"match\":{\"username\":\"?0\"}},{\"match\":{\"password\":\"?1\"}}]}}")
 	User findUser(String username, String password);
+
+	@Query("{\"bool\":{\"must\":[{\"match\":{\"username\":\"?0\"}}]}}")
+	User findByUsername(String username);
 }
