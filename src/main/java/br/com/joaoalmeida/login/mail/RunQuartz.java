@@ -20,7 +20,7 @@ public class RunQuartz {
 			scheduler.start();
 			final JobDetail job = JobBuilder.newJob(JobEmail.class).withIdentity("JobEmail", "grupo01").build();
 			final Trigger trigger = TriggerBuilder.newTrigger().withIdentity("EmailTrigger", "groupo01")
-					.withSchedule(CronScheduleBuilder.cronSchedule("0 0/2 * 1/1 * ? *")).build();
+					.withSchedule(CronScheduleBuilder.cronSchedule("0/10 0 0 ? * * *")).build();
 
 			scheduler.scheduleJob(job, trigger);
 		} catch (final Exception e) {

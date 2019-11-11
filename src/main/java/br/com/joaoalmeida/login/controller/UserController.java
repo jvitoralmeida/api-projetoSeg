@@ -17,8 +17,11 @@ import com.google.gson.Gson;
 import br.com.joaoalmeida.login.bussines.UserBusiness;
 import br.com.joaoalmeida.login.entities.User;
 import br.com.joaoalmeida.login.repository.UserRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
+@Api(value = "UserController")
 public class UserController {
 
 	@Autowired
@@ -27,12 +30,14 @@ public class UserController {
 	@Autowired
 	UserBusiness userBussiness;
 
+	@ApiOperation(value = "Adiciona usuário")
 	@PostMapping("/add")
 	public ResponseEntity<User> addUser(@RequestBody User user) {
 
 		return userBussiness.criarLogin(user);
 	}
 
+	@ApiOperation(value = "Retorna todos usuários")
 	@GetMapping("/users/all")
 	public List<User> getAllUsers() {
 		final Iterator<User> iterator = userRepository.findAll().iterator();
@@ -45,12 +50,14 @@ public class UserController {
 		return users;
 	}
 
+	@ApiOperation(value = "Recuperação de senha")
 	@PostMapping("/senhaEmail")
 	public ResponseEntity<?> enviaSenhaEmail(@RequestBody User user) {
 
 		return userBussiness.enviaSenhaEmail(user);
 	}
 
+	@ApiOperation(value = "Recupera usuário")
 	@PostMapping("/user")
 	public ResponseEntity<User> getUser(@RequestBody String userString) {
 
@@ -59,11 +66,20 @@ public class UserController {
 		return userBussiness.validarLogin(user);
 	}
 
+	@ApiOperation(value = "Deleta usuário pelo ID")
 	@DeleteMapping("/user/{id}")
 	public ResponseEntity<User> deleteById(String id) {
 
 		userRepository.deleteById(id);
 
 		return ResponseEntity.noContent().build();
+	}
+
+	@PostMapping("/trocaSenha")
+	public ResponseEntity<?> trocaSenha(@RequestBody String dadosUser) {
+
+		userBussiness.trocaSenha(dadosUser);
+
+		return null;
 	}
 }

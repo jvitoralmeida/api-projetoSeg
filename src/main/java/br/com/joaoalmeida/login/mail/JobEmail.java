@@ -13,11 +13,14 @@ public class JobEmail implements Job {
 
 		try {
 
-			final Mail firstMailOfHead = Fila.headOfQueueWithDelete();
+			final Mail firstMailOfHead = Fila.headOfQueue();
 
 			if (firstMailOfHead != null) {
 				firstMailOfHead.enviaEmail();
+				Fila.removeElementOfQueue();
 			}
+
+			System.out.println(Fila.headOfQueue());
 		} catch (final Exception e) {
 			e.printStackTrace();
 		}
